@@ -10,22 +10,9 @@ class Quiz {
         this.initialize();
     }
 
-    async initialize() {
-        this.questions = await this.generateQuestions();
+    initialize() {
+        this.questions = quizQuestions.questions;
         console.log('Quiz initialized with:', this.questions.length, 'questions');
-    }
-
-    async generateQuestions() {
-        try {
-            const response = await fetch('/api/questions');
-            if (!response.ok) {
-                throw new Error('Failed to fetch questions');
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching questions:', error);
-            return [];
-        }
     }
 
     initializeEventListeners() {
