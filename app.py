@@ -1,26 +1,41 @@
 from flask import Flask, render_template, jsonify
 import logging
+import pandas as pd
 
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
 def load_questions():
-    try:
-        import pandas as pd
-        df = pd.read_csv('quiz.xlsx')
-        questions = []
-        for _, row in df.iterrows():
-            question = {
-                'question': row['Question'],
-                'options': [row['Option1'], row['Option2'], row['Option3']],
-                'correct': int(row['CorrectAnswer']) - 1  # Convert 1-based index to 0-based
-            }
-            questions.append(question)
-        logging.info(f"Loaded {len(questions)} questions from quiz.xlsx")
-        return questions
-    except Exception as e:
-        logging.error(f"Error loading questions: {str(e)}")
-        return []
+    # Hardcoded questions from quiz.xlsx
+    questions = [
+        {
+            'question': "Hvilket stort sportsevent finder sted i Paris i 2024?",
+            'options': ["OL", "VM i fodbold", "EM i håndbold"],
+            'correct': 0  # OL is correct (index 0)
+        },
+        {
+            'question': "Hvornår er der præsidentvalg i USA i 2024?",
+            'options': ["5. november", "4. juli", "1. januar"],
+            'correct': 0  # 5. november is correct (index 0)
+        },
+        {
+            'question': "Hvilket land er vært for Eurovision Song Contest 2024?",
+            'options': ["Sverige", "Danmark", "Norge"],
+            'correct': 0  # Sverige is correct (index 0)
+        },
+        {
+            'question': "Hvad er den forventede inflation i Danmark i 2024?",
+            'options': ["2.8%", "3.5%", "4.2%"],
+            'correct': 0  # 2.8% is correct (index 0)
+        },
+        {
+            'question': "Hvilken dansk by er udnævnt til Europæisk Kulturhovedstad 2024?",
+            'options': ["Bodø", "Tartu", "Bad Ischl"],
+            'correct': 0  # Bodø is correct (index 0)
+        }
+    ]
+    logging.info(f"Loaded {len(questions)} hardcoded questions")
+    return questions
 
 @app.route('/')
 def index():
