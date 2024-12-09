@@ -1,11 +1,13 @@
 class ConfettiEffect {
     constructor() {
+        console.log('Initializing ConfettiEffect...');
         this.initialize();
     }
 
     initialize() {
         this.canvas = document.getElementById('confetti-canvas');
         if (!this.canvas) {
+            console.log('Creating confetti canvas...');
             this.canvas = document.createElement('canvas');
             this.canvas.id = 'confetti-canvas';
             document.body.appendChild(this.canvas);
@@ -16,6 +18,7 @@ class ConfettiEffect {
 
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
+        console.log('ConfettiEffect initialized successfully');
     }
 
     resizeCanvas() {
@@ -36,12 +39,14 @@ class ConfettiEffect {
     }
 
     start() {
+        console.log('Starting confetti...');
         this.active = true;
         this.particles = Array(100).fill().map(() => this.createParticle());
         this.animate();
     }
 
     stop() {
+        console.log('Stopping confetti...');
         this.active = false;
     }
 
@@ -68,4 +73,12 @@ class ConfettiEffect {
     }
 }
 
-const confetti = new ConfettiEffect();
+// Initialize confetti when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing confetti...');
+    try {
+        window.confetti = new ConfettiEffect();
+    } catch (error) {
+        console.error('Error initializing confetti:', error);
+    }
+});

@@ -5,14 +5,12 @@ class Quiz {
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         this.confetti = window.confetti;
-        this.loadProgress();
         this.initializeEventListeners();
-        console.log('Quiz initialized successfully');
+        this.loadProgress();
+        console.log('Quiz initialized with:', this.questions.length, 'questions');
     }
 
     generateQuestions() {
-        console.log('Generating questions...');
-        // Generate Danish questions about 2024
         return [
             {
                 question: "Hvilket stort sportsevent finder sted i Paris i 2024?",
@@ -29,24 +27,26 @@ class Quiz {
                 options: ["Sverige", "Danmark", "Norge"],
                 correct: 0
             }
-            // More questions will be added here
         ];
     }
 
     initializeEventListeners() {
         console.log('Setting up event listeners...');
+        
+        // Start Quiz button
         const startButton = document.getElementById('start-quiz');
-        const continueButton = document.getElementById('continue-quiz');
-        const restartButton = document.getElementById('restart-quiz');
-        const restartCompletedButton = document.getElementById('restart-completed');
-
         if (startButton) {
             startButton.addEventListener('click', () => {
                 console.log('Start button clicked');
                 this.startQuiz();
             });
+            console.log('Start button listener attached');
+        } else {
+            console.error('Start button not found!');
         }
 
+        // Continue Quiz button
+        const continueButton = document.getElementById('continue-quiz');
         if (continueButton) {
             continueButton.addEventListener('click', () => {
                 console.log('Continue button clicked');
@@ -54,43 +54,48 @@ class Quiz {
             });
         }
 
-        if (restartButton) {
-            restartButton.addEventListener('click', () => {
-                console.log('Restart button clicked');
-                this.restartQuiz();
-            });
-        }
+        // Restart buttons
+        document.getElementById('restart-quiz')?.addEventListener('click', () => this.restartQuiz());
+        document.getElementById('restart-completed')?.addEventListener('click', () => this.restartQuiz());
 
-        if (restartCompletedButton) {
-            restartCompletedButton.addEventListener('click', () => {
-                console.log('Restart completed button clicked');
-                this.restartQuiz();
-            });
-        }
-
+        // Answer options
         const options = document.querySelectorAll('.option');
         options.forEach(button => {
             button.addEventListener('click', (e) => {
-                console.log('Option clicked');
+                console.log('Option clicked:', e.target.textContent);
                 this.handleAnswer(e);
             });
         });
-        console.log('Event listeners set up successfully');
     }
 
     startQuiz() {
         console.log('Starting quiz...');
-        document.getElementById('welcome-screen').style.display = 'none';
-        document.getElementById('quiz-screen').style.display = 'block';
-        this.displayQuestion();
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        
+        if (welcomeScreen && quizScreen) {
+            welcomeScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+            this.displayQuestion();
+            console.log('Quiz started successfully');
+        } else {
+            console.error('Required screens not found!');
+        }
     }
 
     displayQuestion() {
         console.log('Displaying question:', this.currentQuestion + 1);
-        const question = this.questions[this.currentQuestion];
-        document.getElementById('question-text').textContent = question.question;
-        
+        const questionText = document.getElementById('question-text');
         const options = document.querySelectorAll('.option');
+        
+        if (!questionText || options.length === 0) {
+            console.error('Question elements not found!');
+            return;
+        }
+
+        const question = this.questions[this.currentQuestion];
+        questionText.textContent = question.question;
+        
         options.forEach((button, index) => {
             button.textContent = question.options[index];
             button.className = 'option btn btn-outline-light';
@@ -98,13 +103,13 @@ class Quiz {
         });
 
         document.getElementById('current-question').textContent = this.currentQuestion + 1;
-        document.querySelector('.progress-bar').style.width = `${(this.currentQuestion / this.questions.length) * 100}%`;
+        document.querySelector('.progress-bar').style.width = 
+            `${(this.currentQuestion / this.questions.length) * 100}%`;
         
         this.saveProgress();
     }
 
     handleAnswer(event) {
-        console.log('Handling answer...');
         const selectedOption = Array.from(document.querySelectorAll('.option')).indexOf(event.target);
         const question = this.questions[this.currentQuestion];
         
@@ -123,12 +128,10 @@ class Quiz {
         }
 
         document.getElementById('correct-answers').textContent = this.correctAnswers;
-        
         setTimeout(() => this.nextQuestion(), 1500);
     }
 
     nextQuestion() {
-        console.log('Moving to next question...');
         this.currentQuestion++;
         
         if (this.currentQuestion < this.questions.length) {
@@ -139,21 +142,24 @@ class Quiz {
     }
 
     showCompletion() {
-        console.log('Showing completion screen...');
         document.getElementById('quiz-screen').style.display = 'none';
         document.getElementById('completion-screen').style.display = 'block';
-        document.querySelector('.final-score').textContent = 
-            `Du fik ${this.correctAnswers} ud af ${this.questions.length} rigtige!`;
+        
+        const finalScore = document.querySelector('.final-score');
+        if (finalScore) {
+            finalScore.textContent = 
+                `Du fik ${this.correctAnswers} ud af ${this.questions.length} rigtige!`;
+        }
         
         if (this.confetti) {
             this.confetti.start();
             setTimeout(() => this.confetti.stop(), 5000);
         }
+        
         localStorage.removeItem('quizProgress');
     }
 
     restartQuiz() {
-        console.log('Restarting quiz...');
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         document.getElementById('completion-screen').style.display = 'none';
@@ -182,13 +188,12 @@ class Quiz {
     }
 }
 
-// Wait for DOM to be fully loaded before initializing
+// Initialize quiz when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing quiz...');
     try {
-        window.confetti = new ConfettiEffect();
         window.quiz = new Quiz();
-        console.log('Quiz application started successfully');
+        console.log('Quiz initialized successfully');
     } catch (error) {
         console.error('Error initializing quiz:', error);
     }
