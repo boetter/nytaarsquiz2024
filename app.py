@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def load_questions():
     try:
-        df = pd.read_excel('quiz.xlsx')
+        df = pd.read_csv('quiz.xlsx')
         questions = []
         for _, row in df.iterrows():
             question = {
@@ -16,10 +16,12 @@ def load_questions():
                 'correct': int(row['CorrectAnswer']) - 1  # Assuming 1-based indexing in Excel
             }
             questions.append(question)
-        logging.info(f"Loaded {len(questions)} questions from Excel file")
+        logging.info(f"Loaded {len(questions)} questions from file")
         return questions
     except Exception as e:
-        logging.error(f"Error loading questions: {e}")
+        logging.error(f"Error loading questions: {str(e)}")
+        import traceback
+        logging.error(traceback.format_exc())
         return []
 
 @app.route('/')
