@@ -9,27 +9,27 @@ def load_questions():
         {
             'question': "Hvilket stort sportsevent finder sted i Paris i 2024?",
             'options': ["OL", "VM i fodbold", "EM i håndbold"],
-            'correct': 0
+            'correct': 0  # OL is correct (index 0)
         },
         {
             'question': "Hvornår er der præsidentvalg i USA i 2024?",
             'options': ["5. november", "4. juli", "1. januar"],
-            'correct': 0
+            'correct': 0  # 5. november is correct (index 0)
         },
         {
             'question': "Hvilket land er vært for Eurovision Song Contest 2024?",
             'options': ["Sverige", "Danmark", "Norge"],
-            'correct': 0
+            'correct': 0  # Sverige is correct (index 0)
         },
         {
             'question': "Hvad er den forventede inflation i Danmark i 2024?",
             'options': ["2.8%", "3.5%", "4.2%"],
-            'correct': 0
+            'correct': 0  # 2.8% is correct (index 0)
         },
         {
-            'question': "Hvilken dansk by er udnævnt til Europæisk Kulturhovedstad 2024?",
+            'question': "Hvilken by er udnævnt til Europæisk Kulturhovedstad 2024?",
             'options': ["Bodø", "Tartu", "Bad Ischl"],
-            'correct': 0
+            'correct': 0  # Bodø is correct (index 0)
         }
     ]
     logging.info(f"Loaded {len(questions)} hardcoded questions")
