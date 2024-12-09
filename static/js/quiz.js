@@ -1,15 +1,18 @@
 class Quiz {
     constructor() {
+        console.log('Initializing Quiz...');
         this.questions = this.generateQuestions();
         this.currentQuestion = 0;
         this.correctAnswers = 0;
-        this.confetti = confetti;
-        this.initializeEventListeners();
+        this.confetti = window.confetti;
         this.loadProgress();
+        this.initializeEventListeners();
+        console.log('Quiz initialized successfully');
     }
 
     generateQuestions() {
-        // Generate 100 Danish questions about 2024
+        console.log('Generating questions...');
+        // Generate Danish questions about 2024
         return [
             {
                 question: "Hvilket stort sportsevent finder sted i Paris i 2024?",
@@ -21,28 +24,69 @@ class Quiz {
                 options: ["5. november", "4. juli", "1. januar"],
                 correct: 0
             },
-            // ... more questions would be added here
+            {
+                question: "Hvilket land er vært for Eurovision Song Contest 2024?",
+                options: ["Sverige", "Danmark", "Norge"],
+                correct: 0
+            }
+            // More questions will be added here
         ];
     }
 
     initializeEventListeners() {
-        document.getElementById('start-quiz').addEventListener('click', () => this.startQuiz());
-        document.getElementById('continue-quiz').addEventListener('click', () => this.startQuiz());
-        document.getElementById('restart-quiz').addEventListener('click', () => this.restartQuiz());
-        document.getElementById('restart-completed').addEventListener('click', () => this.restartQuiz());
+        console.log('Setting up event listeners...');
+        const startButton = document.getElementById('start-quiz');
+        const continueButton = document.getElementById('continue-quiz');
+        const restartButton = document.getElementById('restart-quiz');
+        const restartCompletedButton = document.getElementById('restart-completed');
 
-        document.querySelectorAll('.option').forEach(button => {
-            button.addEventListener('click', (e) => this.handleAnswer(e));
+        if (startButton) {
+            startButton.addEventListener('click', () => {
+                console.log('Start button clicked');
+                this.startQuiz();
+            });
+        }
+
+        if (continueButton) {
+            continueButton.addEventListener('click', () => {
+                console.log('Continue button clicked');
+                this.startQuiz();
+            });
+        }
+
+        if (restartButton) {
+            restartButton.addEventListener('click', () => {
+                console.log('Restart button clicked');
+                this.restartQuiz();
+            });
+        }
+
+        if (restartCompletedButton) {
+            restartCompletedButton.addEventListener('click', () => {
+                console.log('Restart completed button clicked');
+                this.restartQuiz();
+            });
+        }
+
+        const options = document.querySelectorAll('.option');
+        options.forEach(button => {
+            button.addEventListener('click', (e) => {
+                console.log('Option clicked');
+                this.handleAnswer(e);
+            });
         });
+        console.log('Event listeners set up successfully');
     }
 
     startQuiz() {
+        console.log('Starting quiz...');
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
         this.displayQuestion();
     }
 
     displayQuestion() {
+        console.log('Displaying question:', this.currentQuestion + 1);
         const question = this.questions[this.currentQuestion];
         document.getElementById('question-text').textContent = question.question;
         
@@ -60,6 +104,7 @@ class Quiz {
     }
 
     handleAnswer(event) {
+        console.log('Handling answer...');
         const selectedOption = Array.from(document.querySelectorAll('.option')).indexOf(event.target);
         const question = this.questions[this.currentQuestion];
         
@@ -68,8 +113,10 @@ class Quiz {
         if (selectedOption === question.correct) {
             event.target.classList.add('correct');
             this.correctAnswers++;
-            this.confetti.start();
-            setTimeout(() => this.confetti.stop(), 2000);
+            if (this.confetti) {
+                this.confetti.start();
+                setTimeout(() => this.confetti.stop(), 2000);
+            }
         } else {
             event.target.classList.add('incorrect');
             document.querySelectorAll('.option')[question.correct].classList.add('correct');
@@ -81,6 +128,7 @@ class Quiz {
     }
 
     nextQuestion() {
+        console.log('Moving to next question...');
         this.currentQuestion++;
         
         if (this.currentQuestion < this.questions.length) {
@@ -91,16 +139,21 @@ class Quiz {
     }
 
     showCompletion() {
+        console.log('Showing completion screen...');
         document.getElementById('quiz-screen').style.display = 'none';
         document.getElementById('completion-screen').style.display = 'block';
         document.querySelector('.final-score').textContent = 
             `Du fik ${this.correctAnswers} ud af ${this.questions.length} rigtige!`;
-        this.confetti.start();
-        setTimeout(() => this.confetti.stop(), 5000);
+        
+        if (this.confetti) {
+            this.confetti.start();
+            setTimeout(() => this.confetti.stop(), 5000);
+        }
         localStorage.removeItem('quizProgress');
     }
 
     restartQuiz() {
+        console.log('Restarting quiz...');
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         document.getElementById('completion-screen').style.display = 'none';
@@ -129,7 +182,14 @@ class Quiz {
     }
 }
 
+// Wait for DOM to be fully loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
-    confetti.initialize();
-    new Quiz();
+    console.log('DOM loaded, initializing quiz...');
+    try {
+        window.confetti = new ConfettiEffect();
+        window.quiz = new Quiz();
+        console.log('Quiz application started successfully');
+    } catch (error) {
+        console.error('Error initializing quiz:', error);
+    }
 });
