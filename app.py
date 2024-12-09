@@ -8,12 +8,27 @@ app = Flask(__name__)
 def load_questions():
     try:
         with open('questions.json', 'r', encoding='utf-8') as f:
-            data = json.loads(f.read())
-            questions = data['questions']
-            logging.info(f"Loaded {len(questions)} questions from questions.json")
+            content = f.read()
+            logging.debug(f"Reading JSON content length: {len(content)}")
+            data = json.loads(content)
+            questions = data.get('questions', [])
+            logging.info(f"Successfully loaded {len(questions)} questions from questions.json")
+            
+            # Validate question format
+            for i, q in enumerate(questions):
+                if not isinstance(q, dict) or \
+                   'question' not in q or \
+                   'options' not in q or \
+                   'correct' not in q or \
+                   len(q['options']) != 3:
+                    logging.error(f"Invalid question format at index {i}: {q}")
+                    continue
             return questions
+    except json.JSONDecodeError as e:
+        logging.error(f"JSON parsing error: {str(e)}")
+        return []
     except Exception as e:
-        logging.error(f"Error loading questions: {e}")
+        logging.error(f"Unexpected error loading questions: {str(e)}")
         return []
 
 @app.route('/')
