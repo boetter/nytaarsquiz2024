@@ -179,15 +179,25 @@ const quizQuestions = {
           "Rasmus Gemke"
       ],
       "correct": 1
+    },
+    {
+      "question": "Hvilken forfatter udgav fortsættelsen til den prisbelønnede bestseller \"11%\" i 2024?",
+      "options": [
+          "Maren Uthaug",
+          "Anne-Grethe Bjarup Riis",
+          "Thomas Rydahl"
+      ],
+      "correct": 0
     }
   ]
 };
 
-// WARNING: The following questions are placeholders to reach a total of 150 questions.  Replace with data from questions.json.
-for (let i = 0; i < 130; i++) {
-  quizQuestions.questions.push({
-    "question": `Placeholder Question ${i + 21}`,
-    "options": ["A", "B", "C"],
-    "correct": Math.floor(Math.random() * 3) // Random correct answer
-  });
-}
+// Assuming questions.json structure:  {"questions": [{"question": "...", "options": [...], "correct": ...}, ...]}
+fetch('questions.json')
+  .then(response => response.json())
+  .then(data => {
+    data.questions.forEach(question => {
+      quizQuestions.questions.push(question);
+    });
+  })
+  .catch(error => console.error('Error loading questions.json:', error));
