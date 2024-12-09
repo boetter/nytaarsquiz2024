@@ -1,6 +1,15 @@
 class ConfettiEffect {
     constructor() {
+        this.initialize();
+    }
+
+    initialize() {
         this.canvas = document.getElementById('confetti-canvas');
+        if (!this.canvas) {
+            this.canvas = document.createElement('canvas');
+            this.canvas.id = 'confetti-canvas';
+            document.body.appendChild(this.canvas);
+        }
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.active = false;

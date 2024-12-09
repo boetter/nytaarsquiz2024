@@ -130,5 +130,6 @@ class Quiz {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    confetti.initialize();
     new Quiz();
 });
