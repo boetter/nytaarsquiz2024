@@ -215,6 +215,123 @@ const quizQuestions = {
         "Aarhus Book Fair"
       ],
       "correct": 1
+    },
+    {
+      "question": "Hvilken sund grød, rig på grøntsager, har givet navn til den opskriftsbog, som Mette Mølbak og Oluf Borbye Pedersen udgav i 2024?",
+      "options": [
+        "Grøn energigrød",
+        "Fiberboost-grød",
+        "Superfood-morgenmad"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Fra hvilket land stammer Mark Rutte, der i oktober 2024 overtog posten som NATOs generalsekretær efter Jens Stoltenberg?",
+      "options": [
+        "Belgien",
+        "Holland",
+        "Tyskland"
+      ],
+      "correct": 1
+    },
+    {
+      "question": "Hvilken dansk rapper lancerede en makeup-kollektion med kreative produktnavne som 'Sjakaliner' og 'Glo På Mig'?",
+      "options": [
+        "Tessa",
+        "Gilli",
+        "Kesi"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Hvad hedder Taylor Swifts kæreste, der spillede en afgørende rolle i Kansas City Chiefs' Super Bowl-sejr i år?",
+      "options": [
+        "Patrick Mahomes",
+        "Travis Kelce",
+        "Tom Brady"
+      ],
+      "correct": 1
+    },
+    {
+      "question": "Hvilken dansk para-atlet sikrede sig to sølvmedaljer i både længdespring og 100 meter sprint ved de Paralympiske Lege i Paris 2024?",
+      "options": [
+        "Daniel Wagner",
+        "Peter Rosenmeier",
+        "Martin Black Jørgensen"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Under hvilket kunstnernavn lancerede tv-værterne Sofie Linde og Joakim Ingversen i år en keramik-kollektion i samarbejde med Kähler?",
+      "options": [
+        "KIMPOP",
+        "Linde & Ingversen Design",
+        "Sofie & Joakim Art"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Hvad hedder den norske prinsesse, der i august 2024 giftede sig med sin mangeårige kæreste, Durek Verrett?",
+      "options": [
+        "Prinsesse Ingrid Alexandra",
+        "Prinsesse Märtha Louise",
+        "Prinsesse Mette-Marit"
+      ],
+      "correct": 1
+    },
+    {
+      "question": "Hvilket navn gav Justin og Hailey Bieber deres søn, født i august 2024?",
+      "options": [
+        "Jack Blues Bieber",
+        "James River Bieber",
+        "John Lake Bieber"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Hvem optrådte til årets Super Bowl Halftime Show?",
+      "options": [
+        "Usher",
+        "Beyoncé",
+        "The Weeknd"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Beyoncé udgav sit ottende album i år, hvad hedder det?",
+      "options": [
+        "Cowboy Carter",
+        "Renaissance",
+        "Lemonade"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Ifølge Charli XCX, hvilken slags sommer havde vi så i år?",
+      "options": [
+        "Hot Girl Summer",
+        "Brat Summer",
+        "Nerd Girl Summer"
+      ],
+      "correct": 1
+    },
+    {
+      "question": "Hvem vandt Den Store Bagedyst 2024?",
+      "options": [
+        "Emil Nordentoft Møller",
+        "Emma Plantener",
+        "Sandra Dahl"
+      ],
+      "correct": 2
+    },
+    {
+      "question": "Kunstmaleren og musikeren Johnny Madsen døde i november. Hvilket af de tre udsagn kommer fra ham?",
+      "options": [
+        "\"Cognac krummer ikke i sengen.\"",
+        "\"En god kop kaffe er starten på en produktiv dag.\"",
+        "\"Musik er sjælens spejl.\""
+      ],
+      "correct": 0
     }
   ]
 };
