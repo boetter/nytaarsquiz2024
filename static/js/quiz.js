@@ -1,33 +1,31 @@
 class Quiz {
     constructor() {
         console.log('Initializing Quiz...');
-        this.questions = this.generateQuestions();
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         this.confetti = window.confetti;
+        this.questions = [];
         this.initializeEventListeners();
         this.loadProgress();
+        this.initialize();
+    }
+
+    async initialize() {
+        this.questions = await this.generateQuestions();
         console.log('Quiz initialized with:', this.questions.length, 'questions');
     }
 
-    generateQuestions() {
-        return [
-            {
-                question: "Hvilket stort sportsevent finder sted i Paris i 2024?",
-                options: ["OL", "VM i fodbold", "EM i håndbold"],
-                correct: 0
-            },
-            {
-                question: "Hvornår er der præsidentvalg i USA i 2024?",
-                options: ["5. november", "4. juli", "1. januar"],
-                correct: 0
-            },
-            {
-                question: "Hvilket land er vært for Eurovision Song Contest 2024?",
-                options: ["Sverige", "Danmark", "Norge"],
-                correct: 0
+    async generateQuestions() {
+        try {
+            const response = await fetch('/api/questions');
+            if (!response.ok) {
+                throw new Error('Failed to fetch questions');
             }
-        ];
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+            return [];
+        }
     }
 
     initializeEventListeners() {
