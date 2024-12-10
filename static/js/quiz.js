@@ -33,12 +33,17 @@ class Quiz {
         // Display options
         const optionButtons = document.querySelectorAll('.option');
         optionButtons.forEach((button, index) => {
-            button.textContent = question.options[index];
-            button.classList.remove('correct', 'incorrect');
-            button.disabled = false;
+            // Remove any existing event listeners by cloning and replacing the button
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            // Set up the new button
+            newButton.textContent = question.options[index];
+            newButton.classList.remove('correct', 'incorrect');
+            newButton.disabled = false;
             
             // Add click event listener
-            button.onclick = () => this.handleAnswer(index);
+            newButton.addEventListener('click', () => this.handleAnswer(index));
         });
     }
 
@@ -58,10 +63,19 @@ class Quiz {
 
         if (isCorrect) {
             this.correctAnswers++;
-            // Start confetti effect
-            const confetti = new ConfettiEffect();
-            confetti.start();
-            setTimeout(() => confetti.stop(), 2000);
+            // Create and start confetti effect
+            try {
+                const confetti = new ConfettiEffect();
+                confetti.start();
+                setTimeout(() => {
+                    confetti.stop();
+                    // Remove the canvas after animation
+                    const canvas = document.getElementById('confetti-canvas');
+                    if (canvas) canvas.remove();
+                }, 2000);
+            } catch (error) {
+                console.error('Confetti error:', error);
+            }
         }
 
         // Wait before moving to next question
