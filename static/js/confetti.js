@@ -1,16 +1,39 @@
 class ConfettiEffect {
     constructor() {
         console.log('Initializing ConfettiEffect...');
-        this.initialize();
+        try {
+            this.initialize();
+            console.log('ConfettiEffect initialized successfully');
+        } catch (error) {
+            console.error('Error during confetti initialization:', error);
+        }
     }
 
     initialize() {
-        this.canvas = document.getElementById('confetti-canvas');
-        if (!this.canvas) {
+        // Wait for confetti-canvas or create it
+        let retries = 0;
+        const maxRetries = 5;
+        
+        while (retries < maxRetries) {
+            this.canvas = document.getElementById('confetti-canvas');
+            if (this.canvas) break;
+            
             console.log('Creating confetti canvas...');
             this.canvas = document.createElement('canvas');
             this.canvas.id = 'confetti-canvas';
+            this.canvas.style.position = 'fixed';
+            this.canvas.style.top = '0';
+            this.canvas.style.left = '0';
+            this.canvas.style.width = '100%';
+            this.canvas.style.height = '100%';
+            this.canvas.style.pointerEvents = 'none';
+            this.canvas.style.zIndex = '1000';
             document.body.appendChild(this.canvas);
+            retries++;
+        }
+
+        if (!this.canvas) {
+            throw new Error('Failed to initialize confetti canvas');
         }
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];

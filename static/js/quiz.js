@@ -1,19 +1,51 @@
 class Quiz {
     constructor() {
         console.log('Initializing Quiz...');
-        this.questions = window.quizQuestions.questions;
-        this.currentQuestion = 0;
-        this.correctAnswers = 0;
-        this.confetti = window.confetti;
-        this.correctSound = document.getElementById('correct-sound');
-        this.incorrectSound = document.getElementById('incorrect-sound');
+        try {
+            if (!window.quizQuestions || !window.quizQuestions.questions) {
+                throw new Error('Quiz questions not loaded');
+            }
+            
+            this.questions = window.quizQuestions.questions;
+            this.currentQuestion = 0;
+            this.correctAnswers = 0;
+            this.confetti = window.confetti;
+            this.correctSound = document.getElementById('correct-sound');
+            this.incorrectSound = document.getElementById('incorrect-sound');
 
+            if (!this.questions || this.questions.length === 0) {
+                throw new Error('No questions available');
+            }
+            
+            console.log(`Loaded ${this.questions.length} questions successfully`);
+
+        console.log('Setting up event listeners...');
         // Initialize event listeners
-        document.getElementById('start-quiz').addEventListener('click', () => this.startQuiz());
-        document.getElementById('continue-quiz').addEventListener('click', () => this.continueQuiz());
-        document.getElementById('restart-quiz').addEventListener('click', () => this.restartQuiz());
-        document.getElementById('restart-completed').addEventListener('click', () => this.restartQuiz());
+        const startButton = document.getElementById('start-quiz');
+        if (startButton) {
+            startButton.addEventListener('click', () => {
+                console.log('Start button clicked');
+                this.startQuiz();
+            });
+            console.log('Start button listener attached');
+        }
 
+        const continueButton = document.getElementById('continue-quiz');
+        if (continueButton) {
+            continueButton.addEventListener('click', () => this.continueQuiz());
+        }
+
+        const restartButton = document.getElementById('restart-quiz');
+        if (restartButton) {
+            restartButton.addEventListener('click', () => this.restartQuiz());
+        }
+
+        const restartCompletedButton = document.getElementById('restart-completed');
+        if (restartCompletedButton) {
+            restartCompletedButton.addEventListener('click', () => this.restartQuiz());
+        }
+
+        console.log('Quiz initialized with:', this.questions.length, 'questions');
         // Load progress if exists
         this.loadProgress();
     }
@@ -23,6 +55,7 @@ class Quiz {
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
         this.displayQuestion();
+        console.log('Quiz started successfully');
     }
 
     continueQuiz() {
@@ -189,12 +222,45 @@ function shareOnLinkedIn() {
 }
 
 // Initialize quiz when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing quiz...');
-    try {
-        window.quiz = new Quiz();
-        console.log('Quiz initialized successfully');
-    } catch (error) {
-        console.error('Error initializing quiz:', error);
+function initializeQuizWhenReady() {
+    const initialize = () => {
+        // Wait for a short delay to ensure all scripts are loaded
+        setTimeout(() => {
+            console.log('Attempting to initialize quiz...');
+            if (!window.quiz) {
+                try {
+                    window.quiz = new Quiz();
+                    console.log('Quiz initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing quiz:', error);
+                    // Retry initialization after a delay if it fails
+                    setTimeout(initialize, 500);
+                }
+            }
+        }, 100);
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded event fired');
+            initialize();
+        });
+    } else {
+        console.log('DOM already loaded, initializing immediately');
+        initialize();
     }
-});
+}
+
+initializeQuizWhenReady();
+
+function initializeQuiz() {
+    console.log('DOM loaded, initializing quiz...');
+    if (!window.quiz) {
+        try {
+            window.quiz = new Quiz();
+            console.log('Quiz initialized successfully');
+        } catch (error) {
+            console.error('Error initializing quiz:', error);
+        }
+    }
+}

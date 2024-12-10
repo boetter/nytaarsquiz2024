@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_from_directory
 import logging
 import json
 
@@ -33,7 +33,21 @@ def load_questions():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        logging.info("Serving index.html template")
+        return render_template('index.html')
+    except Exception as e:
+        logging.error(f"Error serving index.html: {str(e)}")
+        return str(e), 500
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    try:
+        logging.info(f"Serving static file: {filename}")
+        return send_from_directory('static', filename)
+    except Exception as e:
+        logging.error(f"Error serving static file {filename}: {str(e)}")
+        return str(e), 404
 
 @app.route('/api/questions')
 def get_questions():
