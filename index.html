@@ -1,128 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="da">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nytårs Quiz 2024</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: url('bg.png') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        .screen {
-            background-color: rgba(44, 62, 80, 0.85); /* Semi-transparent dark background */
-            backdrop-filter: blur(5px);
-            border-radius: 15px;
-        }
-        .screen {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            text-align: center;
-        }
-        .btn-gold {
-            background-color: #ffd700;
-            border: none;
-            color: #000;
-            padding: 10px 20px;
-            font-weight: bold;
-            margin: 10px;
-        }
-        .btn-silver {
-            background-color: #c0c0c0;
-            border: none;
-            color: #000;
-            padding: 10px 20px;
-            font-weight: bold;
-            margin: 10px;
-        }
-        .progress-container {
-            margin: 20px 0;
-        }
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .option {
-            background-color: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            transition: all 0.3s;
-        }
-        .option:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .option.correct {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-        .option.incorrect {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>    
-    <!-- Welcome Screen -->
-    <div id="welcome-screen" class="screen">
-        <h1>Velkommen til Nytårs Quiz 2024! 🎉</h1>
-        <p>Test din viden om det kommende år med spændende spørgsmål!</p>
-        <button id="start-quiz" class="btn btn-gold">Start Quiz</button>
-        <button id="continue-quiz" class="btn btn-silver" style="display: none">Fortsæt Quiz</button>
-    </div>
-
-    <!-- Quiz Screen -->
-    <div id="quiz-screen" class="screen" style="display: none">
-        <div class="progress-container">
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-            </div>
-            <div class="stats">
-                <span class="question-counter">Spørgsmål: <span id="current-question">1</span>/<span id="total-questions">0</span></span>
-                <span class="score">Score: <span id="correct-answers">0</span> rigtige</span>
-            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Jacobs Nytårsquiz 2024</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <style>
+            body {
+                background: url("bg.png") no-repeat center center fixed;
+                background-size: cover;
+                color: white;
+                font-family: Arial, sans-serif;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            .screen {
+                background-color: rgba(
+                    44,
+                    62,
+                    80,
+                    0.85
+                ); /* Semi-transparent dark background */
+                backdrop-filter: blur(5px);
+                border-radius: 15px;
+            }
+            .screen {
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 2rem;
+                text-align: center;
+            }
+            .btn-gold {
+                background-color: #ffd700;
+                border: none;
+                color: #000;
+                padding: 10px 20px;
+                font-weight: bold;
+                margin: 10px;
+            }
+            .btn-silver {
+                background-color: #c0c0c0;
+                border: none;
+                color: #000;
+                padding: 10px 20px;
+                font-weight: bold;
+                margin: 10px;
+            }
+            .progress-container {
+                margin: 20px 0;
+            }
+            .options-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin: 20px 0;
+            }
+            .option {
+                background-color: transparent;
+                border: 2px solid white;
+                color: white;
+                padding: 15px;
+                text-align: left;
+                transition: all 0.3s;
+            }
+            .option:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            .option.correct {
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+            .option.incorrect {
+                background-color: #dc3545;
+                border-color: #dc3545;
+            }
+            .stats {
+                display: flex;
+                justify-content: space-between;
+                margin: 10px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen">
+            <h1>Velkommen til Jacobs Nytårsquiz 2024! 🎉</h1>
+            <p>
+                Jeg har samlet 150 spørgsmål om stort set alt der er sket i
+                2024. Nogle spørgsmål er svære, andre er nemme. Kan du klare dem
+                alle?
+            </p>
+            <button id="start-quiz" class="btn btn-gold">Start Quiz</button>
+            <button
+                id="continue-quiz"
+                class="btn btn-silver"
+                style="display: none"
+            >
+                Fortsæt Quiz
+            </button>
         </div>
 
-        <div class="question-container">
-            <h2 id="question-text"></h2>
-            <div class="options-container">
-                <button class="option btn btn-outline-light"></button>
-                <button class="option btn btn-outline-light"></button>
-                <button class="option btn btn-outline-light"></button>
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen" style="display: none">
+            <div class="progress-container">
+                <div class="progress">
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: 0%"
+                    ></div>
+                </div>
+                <div class="stats">
+                    <span class="question-counter"
+                        >Spørgsmål: <span id="current-question">1</span>/<span
+                            id="total-questions"
+                            >0</span
+                        ></span
+                    >
+                    <span class="score"
+                        >Score:
+                        <span id="correct-answers">0</span> rigtige</span
+                    >
+                </div>
             </div>
+
+            <div class="question-container">
+                <h2 id="question-text"></h2>
+                <div class="options-container">
+                    <button class="option btn btn-outline-light"></button>
+                    <button class="option btn btn-outline-light"></button>
+                    <button class="option btn btn-outline-light"></button>
+                </div>
+            </div>
+
+            <button id="restart-quiz" class="btn btn-danger">
+                Start Forfra
+            </button>
         </div>
 
-        <button id="restart-quiz" class="btn btn-danger">Start Forfra</button>
-    </div>
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="screen" style="display: none">
+            <h1>Tillykke! 🎊</h1>
+            <div class="final-score"></div>
 
-    <!-- Completion Screen -->
-    <div id="completion-screen" class="screen" style="display: none">
-        <h1>Tillykke! 🎊</h1>
-        <div class="final-score"></div>
-        <button id="share-results" class="btn btn-silver mb-2">Del Resultat 🔗</button>
-        <br>
-        <button id="restart-completed" class="btn btn-gold">Prøv Igen</button>
-    </div>
+            <br />
+            <button id="restart-completed" class="btn btn-gold">
+                Prøv Igen
+            </button>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/tone"></script>
-    <script src="js/confetti.js"></script>
-    <script src="js/questions.js"></script>
-    <script src="js/quiz.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/tone"></script>
+        <script src="js/confetti.js"></script>
+        <script src="js/questions.js"></script>
+        <script src="js/quiz.js"></script>
+    </body>
 </html>
