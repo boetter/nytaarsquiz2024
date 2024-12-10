@@ -100,5 +100,10 @@ class Quiz {
 
 // Initialize quiz when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new Quiz();
+    console.log('DOM Content Loaded event fired');
+    if (window.quizQuestions) {
+        new Quiz();
+    } else {
+        console.error('Quiz questions not loaded properly');
+    }
 });

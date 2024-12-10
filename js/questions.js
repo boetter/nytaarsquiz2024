@@ -1,4 +1,4 @@
-const quizQuestions = {
+window.quizQuestions = {
   "questions": [
       {
           "question": "Hvilke lande blev medlemmer af BRICS-samarbejdet den 1. januar 2024?",
