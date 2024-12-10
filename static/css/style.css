@@ -138,40 +138,45 @@ h2 {
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, background-color, box-shadow;
 }
 
 .option:hover {
     background-color: var(--gold);
     color: var(--midnight-blue);
     border-color: var(--gold);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    transform: translateY(-1px) translateZ(0);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
 }
 
 .option.correct {
     background-color: var(--correct-green);
     border-color: var(--correct-green);
     color: white;
-    animation: correctPulse 0.5s ease-out;
+    animation: correctPulse 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .option.incorrect {
     background-color: var(--incorrect-red);
     border-color: var(--incorrect-red);
     color: white;
-    animation: incorrectShake 0.5s ease-in-out;
+    animation: incorrectShake 0.6s cubic-bezier(0.36, 0, 0.66, -0.56);
 }
 
 @keyframes correctPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1) translateZ(0); }
+    40% { transform: scale(1.02) translateZ(0); }
+    80% { transform: scale(1.005) translateZ(0); }
+    100% { transform: scale(1) translateZ(0); }
 }
 
 @keyframes incorrectShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
+    0%, 100% { transform: translateX(0) translateZ(0); }
+    25% { transform: translateX(-4px) translateZ(0); }
+    50% { transform: translateX(3px) translateZ(0); }
+    75% { transform: translateX(-2px) translateZ(0); }
 }
 
 #completion-screen {
