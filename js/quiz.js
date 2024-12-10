@@ -133,7 +133,9 @@ class Quiz {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM Content Loaded event fired');
     if (window.quizQuestions) {
-        new Quiz();
+        const quiz = new Quiz();
+        // Update total questions display
+        document.getElementById('total-questions').textContent = quiz.questions.length;
     } else {
         console.error('Quiz questions not loaded properly');
     }
