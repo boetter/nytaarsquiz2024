@@ -3,9 +3,6 @@ class Quiz {
         this.questions = window.quizQuestions.questions;
         this.currentQuestion = 0;
         this.correctAnswers = 0;
-        this.confetti = new ConfettiEffect();
-        this.correctSound = document.getElementById('correct-sound');
-        this.incorrectSound = document.getElementById('incorrect-sound');
 
         // Initialize event listeners
         document.getElementById('start-quiz').addEventListener('click', () => this.startQuiz());
@@ -61,18 +58,8 @@ class Quiz {
         if (isCorrect) {
             this.correctAnswers++;
             selectedOption.classList.add('correct');
-            if (this.confetti) {
-                this.confetti.start();
-                setTimeout(() => this.confetti.stop(), 1000);
-            }
-            if (this.correctSound) {
-                this.correctSound.play().catch(e => console.log('Error playing sound:', e));
-            }
         } else {
             selectedOption.classList.add('incorrect');
-            if (this.incorrectSound) {
-                this.incorrectSound.play().catch(e => console.log('Error playing sound:', e));
-            }
             // Show correct answer
             document.querySelectorAll('.option')[question.correct].classList.add('correct');
         }
@@ -104,18 +91,6 @@ class Quiz {
         
         // Store score for social media sharing
         window.shareScore = score;
-
-        // Final celebration
-        if (this.confetti) {
-            this.confetti.start();
-            setTimeout(() => {
-                this.confetti.stop();
-                setTimeout(() => {
-                    this.confetti.start();
-                    setTimeout(() => this.confetti.stop(), 2000);
-                }, 500);
-            }, 3000);
-        }
         
         localStorage.removeItem('quizProgress');
     }
