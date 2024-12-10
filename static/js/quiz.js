@@ -43,18 +43,32 @@ class Quiz {
     handleAnswer(index) {
         const question = this.questions[this.currentQuestion];
         const isCorrect = index === question.correct;
+        const optionButtons = document.querySelectorAll('.option');
+
+        // Disable all buttons after selection
+        optionButtons.forEach(button => button.disabled = true);
+
+        // Show correct/incorrect visual feedback
+        optionButtons[index].classList.add(isCorrect ? 'correct' : 'incorrect');
+        optionButtons[question.correct].classList.add('correct');
 
         if (isCorrect) {
             this.correctAnswers++;
+            // Start confetti effect
+            const confetti = new ConfettiEffect();
+            confetti.start();
+            setTimeout(() => confetti.stop(), 2000);
         }
 
-        // Move to next question
-        this.currentQuestion++;
-        if (this.currentQuestion < this.questions.length) {
-            this.displayQuestion();
-        } else {
-            this.showCompletion();
-        }
+        // Wait before moving to next question
+        setTimeout(() => {
+            this.currentQuestion++;
+            if (this.currentQuestion < this.questions.length) {
+                this.displayQuestion();
+            } else {
+                this.showCompletion();
+            }
+        }, 1500);
     }
 
     showCompletion() {
