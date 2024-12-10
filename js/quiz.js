@@ -4,13 +4,33 @@ class Quiz {
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         
+        // Load saved progress
+        const savedProgress = localStorage.getItem('quizProgress');
+        if (savedProgress) {
+            const progress = JSON.parse(savedProgress);
+            this.currentQuestion = progress.currentQuestion;
+            this.correctAnswers = progress.correctAnswers;
+            // Show continue button if there's saved progress
+            document.getElementById('continue-quiz').style.display = 'block';
+        }
+        
         // Initialize event listeners
         document.getElementById('start-quiz').addEventListener('click', () => this.startQuiz());
+        document.getElementById('continue-quiz').addEventListener('click', () => this.continueQuiz());
         document.getElementById('restart-quiz').addEventListener('click', () => this.restartQuiz());
         document.getElementById('restart-completed').addEventListener('click', () => this.restartQuiz());
-    }
 
     startQuiz() {
+        // Clear any existing progress when starting fresh
+        localStorage.removeItem('quizProgress');
+        this.currentQuestion = 0;
+        this.correctAnswers = 0;
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        this.displayQuestion();
+    }
+
+    continueQuiz() {
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
         this.displayQuestion();
@@ -71,6 +91,12 @@ class Quiz {
             }, 1500);
         }
 
+        // Save progress
+        localStorage.setItem('quizProgress', JSON.stringify({
+            currentQuestion: this.currentQuestion + 1,
+            correctAnswers: this.correctAnswers
+        }));
+
         // Wait before moving to next question
         setTimeout(() => {
             this.currentQuestion++;
@@ -90,11 +116,15 @@ class Quiz {
     }
 
     restartQuiz() {
+        // Clear saved progress
+        localStorage.removeItem('quizProgress');
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         document.getElementById('completion-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'none';
         document.getElementById('welcome-screen').style.display = 'block';
+        // Hide continue button since progress is cleared
+        document.getElementById('continue-quiz').style.display = 'none';
     }
 }
 
