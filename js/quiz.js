@@ -83,8 +83,10 @@ class Quiz {
         optionButtons[index].classList.add(isCorrect ? 'correct' : 'incorrect');
         if (!isCorrect) {
             optionButtons[question.correct].classList.add('correct');
-            // Play incorrect sound
-            this.synth.triggerAttackRelease('C4', '8n');
+            // Play incorrect sound - descending notes
+            this.synth.triggerAttackRelease('A4', '16n');
+            setTimeout(() => this.synth.triggerAttackRelease('E4', '16n'), 100);
+            setTimeout(() => this.synth.triggerAttackRelease('C4', '8n'), 200);
         }
 
         if (isCorrect) {
@@ -92,8 +94,11 @@ class Quiz {
             // Create and start confetti effect
             const confetti = new ConfettiEffect();
             confetti.start();
-            // Play correct sound
-            this.synth.triggerAttackRelease('G4', '8n');
+            // Play correct sound - ascending victory melody
+            this.synth.triggerAttackRelease('C4', '16n');
+            setTimeout(() => this.synth.triggerAttackRelease('E4', '16n'), 100);
+            setTimeout(() => this.synth.triggerAttackRelease('G4', '16n'), 200);
+            setTimeout(() => this.synth.triggerAttackRelease('C5', '8n'), 300);
             setTimeout(() => {
                 confetti.stop();
             }, 1500);
