@@ -64,18 +64,11 @@ class Quiz {
         if (isCorrect) {
             this.correctAnswers++;
             // Create and start confetti effect
-            try {
-                const confetti = new ConfettiEffect();
-                confetti.start();
-                setTimeout(() => {
-                    confetti.stop();
-                    // Remove the canvas after animation
-                    const canvas = document.getElementById('confetti-canvas');
-                    if (canvas) canvas.remove();
-                }, 2000);
-            } catch (error) {
-                console.error('Confetti error:', error);
-            }
+            const confetti = new ConfettiEffect();
+            confetti.start();
+            setTimeout(() => {
+                confetti.stop();
+            }, 1500);
         }
 
         // Wait before moving to next question
