@@ -200,9 +200,45 @@ h2 {
 }
 
 .final-score {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin: 2rem 0;
     color: var(--gold);
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.share-container {
+    margin: 2rem 0;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.btn-facebook {
+    background-color: #4267B2;
+    color: white;
+}
+
+.btn-twitter {
+    background-color: #1DA1F2;
+    color: white;
+}
+
+.btn-linkedin {
+    background-color: #0077b5;
+    color: white;
+}
+
+.btn-facebook:hover,
+.btn-twitter:hover,
+.btn-linkedin:hover {
+    transform: translateY(-2px);
+    color: white;
+    filter: brightness(1.1);
 }
 
 @media (max-width: 768px) {

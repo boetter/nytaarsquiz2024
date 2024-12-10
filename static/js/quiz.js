@@ -1,130 +1,111 @@
 class Quiz {
     constructor() {
         console.log('Initializing Quiz...');
+        this.questions = window.quizQuestions.questions;
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         this.confetti = window.confetti;
-        this.questions = [];
-        this.initializeEventListeners();
+        this.correctSound = document.getElementById('correct-sound');
+        this.incorrectSound = document.getElementById('incorrect-sound');
+
+        // Initialize event listeners
+        document.getElementById('start-quiz').addEventListener('click', () => this.startQuiz());
+        document.getElementById('continue-quiz').addEventListener('click', () => this.continueQuiz());
+        document.getElementById('restart-quiz').addEventListener('click', () => this.restartQuiz());
+        document.getElementById('restart-completed').addEventListener('click', () => this.restartQuiz());
+
+        // Load progress if exists
         this.loadProgress();
-        this.initialize();
-    }
-
-    initialize() {
-        this.questions = quizQuestions.questions;
-        console.log('Quiz initialized with:', this.questions.length, 'questions');
-    }
-
-    initializeEventListeners() {
-        console.log('Setting up event listeners...');
-        
-        // Start Quiz button
-        const startButton = document.getElementById('start-quiz');
-        if (startButton) {
-            startButton.addEventListener('click', () => {
-                console.log('Start button clicked');
-                this.startQuiz();
-            });
-            console.log('Start button listener attached');
-        } else {
-            console.error('Start button not found!');
-        }
-
-        // Continue Quiz button
-        const continueButton = document.getElementById('continue-quiz');
-        if (continueButton) {
-            continueButton.addEventListener('click', () => {
-                console.log('Continue button clicked');
-                this.startQuiz();
-            });
-        }
-
-        // Restart buttons
-        document.getElementById('restart-quiz')?.addEventListener('click', () => this.restartQuiz());
-        document.getElementById('restart-completed')?.addEventListener('click', () => this.restartQuiz());
-
-        // Answer options
-        const options = document.querySelectorAll('.option');
-        options.forEach(button => {
-            button.addEventListener('click', (e) => {
-                console.log('Option clicked:', e.target.textContent);
-                this.handleAnswer(e);
-            });
-        });
     }
 
     startQuiz() {
         console.log('Starting quiz...');
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        
-        if (welcomeScreen && quizScreen) {
-            welcomeScreen.style.display = 'none';
-            quizScreen.style.display = 'block';
-            this.displayQuestion();
-            console.log('Quiz started successfully');
-        } else {
-            console.error('Required screens not found!');
-        }
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        this.displayQuestion();
+    }
+
+    continueQuiz() {
+        console.log('Continuing quiz...');
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        this.displayQuestion();
     }
 
     displayQuestion() {
-        console.log('Displaying question:', this.currentQuestion + 1);
-        const questionText = document.getElementById('question-text');
-        const options = document.querySelectorAll('.option');
-        
-        if (!questionText || options.length === 0) {
-            console.error('Question elements not found!');
+        const question = this.questions[this.currentQuestion];
+        if (!question) {
+            console.error('No question found at index:', this.currentQuestion);
             return;
         }
 
-        const question = this.questions[this.currentQuestion];
-        questionText.textContent = question.question;
-        
-        options.forEach((button, index) => {
-            button.textContent = question.options[index];
-            button.className = 'option btn btn-outline-light';
-            button.disabled = false;
-        });
+        // Update progress bar
+        const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
+        document.querySelector('.progress-bar').style.width = `${progress}%`;
 
+        // Update question counter
         document.getElementById('current-question').textContent = this.currentQuestion + 1;
-        document.querySelector('.progress-bar').style.width = 
-            `${(this.currentQuestion / this.questions.length) * 100}%`;
-        
-        this.saveProgress();
+        document.getElementById('correct-answers').textContent = this.correctAnswers;
+
+        // Display question
+        document.getElementById('question-text').textContent = question.question;
+
+        // Display options
+        const optionButtons = document.querySelectorAll('.option');
+        optionButtons.forEach((button, index) => {
+            button.textContent = question.options[index];
+            button.classList.remove('correct', 'incorrect');
+            button.disabled = false;
+            button.onclick = () => this.handleAnswer(index);
+        });
     }
 
-    handleAnswer(event) {
-        const selectedOption = Array.from(document.querySelectorAll('.option')).indexOf(event.target);
+    handleAnswer(index) {
         const question = this.questions[this.currentQuestion];
-        
-        document.querySelectorAll('.option').forEach(button => button.disabled = true);
-        
-        if (selectedOption === question.correct) {
-            event.target.classList.add('correct');
+        const selectedOption = document.querySelectorAll('.option')[index];
+        const isCorrect = index === question.correct;
+
+        if (isCorrect) {
             this.correctAnswers++;
-            if (this.confetti) {
-                this.confetti.start();
-                setTimeout(() => this.confetti.stop(), 2000);
-            }
-            document.getElementById('correct-sound').play().catch(e => console.log('Error playing sound:', e));
+            selectedOption.classList.add('correct');
+            this.celebrateCorrectAnswer();
         } else {
-            event.target.classList.add('incorrect');
+            selectedOption.classList.add('incorrect');
+            this.playIncorrectSound();
+            // Show correct answer
             document.querySelectorAll('.option')[question.correct].classList.add('correct');
-            document.getElementById('incorrect-sound').play().catch(e => console.log('Error playing sound:', e));
         }
 
-        document.getElementById('correct-answers').textContent = this.correctAnswers;
-        setTimeout(() => this.nextQuestion(), 1500);
+        // Disable all options after selection
+        document.querySelectorAll('.option').forEach(option => option.disabled = true);
+
+        // Save progress
+        this.saveProgress();
+
+        // Move to next question after delay
+        setTimeout(() => {
+            this.currentQuestion++;
+            if (this.currentQuestion < this.questions.length) {
+                this.displayQuestion();
+            } else {
+                this.showCompletion();
+            }
+        }, 1500);
     }
 
-    nextQuestion() {
-        this.currentQuestion++;
-        
-        if (this.currentQuestion < this.questions.length) {
-            this.displayQuestion();
-        } else {
-            this.showCompletion();
+    celebrateCorrectAnswer() {
+        if (this.confetti) {
+            this.confetti.start();
+            setTimeout(() => this.confetti.stop(), 1000);
+        }
+        if (this.correctSound) {
+            this.correctSound.play().catch(e => console.log('Error playing sound:', e));
+        }
+    }
+
+    playIncorrectSound() {
+        if (this.incorrectSound) {
+            this.incorrectSound.play().catch(e => console.log('Error playing sound:', e));
         }
     }
 
@@ -133,16 +114,25 @@ class Quiz {
         document.getElementById('completion-screen').style.display = 'block';
         
         const finalScore = document.querySelector('.final-score');
+        const score = `${this.correctAnswers} ud af ${this.questions.length}`;
         if (finalScore) {
-            finalScore.textContent = 
-                `Du fik ${this.correctAnswers} ud af ${this.questions.length} rigtige!`;
+            finalScore.textContent = `Du fik ${score} rigtige!`;
         }
         
+        // Celebration confetti effect
         if (this.confetti) {
             this.confetti.start();
-            setTimeout(() => this.confetti.stop(), 5000);
+            setTimeout(() => {
+                this.confetti.stop();
+                setTimeout(() => {
+                    this.confetti.start();
+                    setTimeout(() => this.confetti.stop(), 2000);
+                }, 500);
+            }, 3000);
         }
         
+        // Store score for social media sharing
+        window.shareScore = score;
         localStorage.removeItem('quizProgress');
     }
 
@@ -150,9 +140,10 @@ class Quiz {
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         document.getElementById('completion-screen').style.display = 'none';
-        document.getElementById('quiz-screen').style.display = 'block';
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('welcome-screen').style.display = 'block';
         document.getElementById('correct-answers').textContent = '0';
-        this.displayQuestion();
+        document.querySelector('.progress-bar').style.width = '0%';
         localStorage.removeItem('quizProgress');
     }
 
@@ -173,6 +164,28 @@ class Quiz {
             document.getElementById('continue-quiz').style.display = 'block';
         }
     }
+}
+
+// Social Media Sharing Functions
+function shareOnFacebook() {
+    const text = `Jeg fik ${window.shareScore} rigtige i Nytårs Quiz 2024! 🎉 Prøv selv at teste din viden!`;
+    const url = window.location.href;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, 
+                '_blank', 'width=600,height=400');
+}
+
+function shareOnTwitter() {
+    const text = `Jeg fik ${window.shareScore} rigtige i Nytårs Quiz 2024! 🎉 Prøv selv at teste din viden!`;
+    const url = window.location.href;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+                '_blank', 'width=600,height=400');
+}
+
+function shareOnLinkedIn() {
+    const text = `Jeg fik ${window.shareScore} rigtige i Nytårs Quiz 2024! 🎉`;
+    const url = window.location.href;
+    window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent('Nytårs Quiz 2024')}&summary=${encodeURIComponent(text)}`,
+                '_blank', 'width=600,height=400');
 }
 
 // Initialize quiz when DOM is loaded
