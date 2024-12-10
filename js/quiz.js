@@ -19,6 +19,7 @@ class Quiz {
         document.getElementById('continue-quiz').addEventListener('click', () => this.continueQuiz());
         document.getElementById('restart-quiz').addEventListener('click', () => this.restartQuiz());
         document.getElementById('restart-completed').addEventListener('click', () => this.restartQuiz());
+    }
 
     startQuiz() {
         // Clear any existing progress when starting fresh
