@@ -36,6 +36,8 @@ class Quiz {
             button.textContent = question.options[index];
             button.classList.remove('correct', 'incorrect');
             button.disabled = false;
+            
+            // Add click event listener
             button.onclick = () => this.handleAnswer(index);
         });
     }
@@ -50,7 +52,9 @@ class Quiz {
 
         // Show correct/incorrect visual feedback
         optionButtons[index].classList.add(isCorrect ? 'correct' : 'incorrect');
-        optionButtons[question.correct].classList.add('correct');
+        if (!isCorrect) {
+            optionButtons[question.correct].classList.add('correct');
+        }
 
         if (isCorrect) {
             this.correctAnswers++;

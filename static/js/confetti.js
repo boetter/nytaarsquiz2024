@@ -2,6 +2,7 @@ class ConfettiEffect {
     constructor() {
         this.canvas = document.getElementById('confetti-canvas');
         if (!this.canvas) {
+            console.log('Creating new canvas');
             this.canvas = document.createElement('canvas');
             this.canvas.id = 'confetti-canvas';
             this.canvas.style.position = 'fixed';
@@ -14,11 +15,13 @@ class ConfettiEffect {
             document.body.appendChild(this.canvas);
         }
         
+        // Set canvas dimensions explicitly
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.active = false;
 
-        this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
     }
 
@@ -40,13 +43,19 @@ class ConfettiEffect {
     }
 
     start() {
-        this.active = true;
-        this.particles = Array(100).fill().map(() => this.createParticle());
-        this.animate();
+        if (!this.active) {
+            console.log('Starting confetti');
+            this.active = true;
+            this.particles = Array(50).fill().map(() => this.createParticle());
+            this.animate();
+        }
     }
 
     stop() {
+        console.log('Stopping confetti');
         this.active = false;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.particles = [];
     }
 
     animate() {
