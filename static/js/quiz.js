@@ -107,9 +107,11 @@ class Quiz {
                 this.confetti.start();
                 setTimeout(() => this.confetti.stop(), 2000);
             }
+            document.getElementById('correct-sound').play().catch(e => console.log('Error playing sound:', e));
         } else {
             event.target.classList.add('incorrect');
             document.querySelectorAll('.option')[question.correct].classList.add('correct');
+            document.getElementById('incorrect-sound').play().catch(e => console.log('Error playing sound:', e));
         }
 
         document.getElementById('correct-answers').textContent = this.correctAnswers;
