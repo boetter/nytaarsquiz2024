@@ -1,0 +1,15 @@
+{
+  "name": "nytarsquiz2024",
+  "version": "1.0.0",
+  "description": "An interactive quiz application focused on Danish cultural traditions and events from the year 2024. Test your knowledge about significant events, cultural moments, and Danish trivia from the past year.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tone": "^15.0.4"
+  }
+}

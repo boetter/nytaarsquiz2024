@@ -4,6 +4,9 @@ class Quiz {
         this.currentQuestion = 0;
         this.correctAnswers = 0;
         
+        // Initialize audio synth
+        this.synth = new Tone.Synth().toDestination();
+        
         // Load saved progress
         const savedProgress = localStorage.getItem('quizProgress');
         if (savedProgress) {
@@ -80,6 +83,8 @@ class Quiz {
         optionButtons[index].classList.add(isCorrect ? 'correct' : 'incorrect');
         if (!isCorrect) {
             optionButtons[question.correct].classList.add('correct');
+            // Play incorrect sound
+            this.synth.triggerAttackRelease('C4', '8n');
         }
 
         if (isCorrect) {
@@ -87,6 +92,8 @@ class Quiz {
             // Create and start confetti effect
             const confetti = new ConfettiEffect();
             confetti.start();
+            // Play correct sound
+            this.synth.triggerAttackRelease('G4', '8n');
             setTimeout(() => {
                 confetti.stop();
             }, 1500);
