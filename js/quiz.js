@@ -126,6 +126,32 @@ class Quiz {
         document.getElementById('completion-screen').style.display = 'block';
         const score = `${this.correctAnswers} ud af ${this.questions.length}`;
         document.querySelector('.final-score').textContent = `Du fik ${score} rigtige!`;
+        
+        // Add share button functionality
+        const shareButton = document.getElementById('share-results');
+        shareButton.addEventListener('click', () => this.shareResults());
+    }
+
+    async shareResults() {
+        const score = `${this.correctAnswers} ud af ${this.questions.length}`;
+        const text = `🎉 Jeg fik ${score} rigtige i Nytårs Quiz 2024! Prøv selv at teste din viden om året der gik!`;
+        
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'Nytårs Quiz 2024',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback to clipboard
+                await navigator.clipboard.writeText(text + '\n' + window.location.href);
+                alert('Resultat kopieret til udklipsholder! 📋');
+            }
+        } catch (error) {
+            console.error('Error sharing results:', error);
+            alert('Kunne ikke dele resultat. Prøv igen senere.');
+        }
     }
 
     restartQuiz() {
