@@ -3,7 +3,7 @@ class Quiz {
         this.questions = window.quizQuestions.questions;
         this.currentQuestion = 0;
         this.correctAnswers = 0;
-        this.confetti = window.confetti;
+        this.confetti = new ConfettiEffect();
         this.correctSound = document.getElementById('correct-sound');
         this.incorrectSound = document.getElementById('incorrect-sound');
 
@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.quiz = new Quiz();
 });
 
+// Social media sharing functions
 function shareOnFacebook() {
     const text = `Jeg fik ${window.shareScore} rigtige i Nytårs Quiz 2024! 🎉 Prøv selv at teste din viden!`;
     const url = window.location.href;

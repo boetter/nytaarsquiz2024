@@ -71,8 +71,3 @@ class ConfettiEffect {
         requestAnimationFrame(() => this.animate());
     }
 }
-
-// Initialize confetti when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.confetti = new ConfettiEffect();
-});
